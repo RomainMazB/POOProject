@@ -37,17 +37,64 @@ class ProductController
 
         // Lors de l'envoi du formulaire de modification
         if (isset($_POST['sendModifyForm'])) {
-            // On le met à jour avec la méthode update et les données du formulaire
-            $product->update([
-            'name' => htmlspecialchar($_POST['name']),
-            'price' => (float)$_POST['price']
-            ]);
+            if (/* Ici tu fait tes validation (!empty etc...) */) {
+                // On le met à jour avec la méthode update et les données du formulaire
+                $product->update([
+                    'name' => htmlspecialchar($_POST['name']),
+                    'price' => (float)$_POST['price']
+                ]);
 
-            $displayValidationMessage = true;
+                $displayValidationMessage = true;
+            } else {
+                $errorMessage = 'Veuillez compléter tous les champs';
+            }
         }
+
+        // Les données du formulaire, avec la priorization $_POST puis les données du produit
+        $form = [
+            'name' => formValue('name', $product->name),
+            'price' => formValue('name', $product->price)
+        ];
 
         // On affiche la vue
         require('../views/product/Form.php');
+    }
+
+    /**
+     * Affiche le formulaire de création et sauvegarde un nouveau produit
+     */
+    public function create(): void
+    {
+        // Les données du formulaire
+        $form = [
+            'name' => formValue('name'),
+            'price' => formValue('name')
+        ];
+
+        // Lors de l'envoi du formulaire de création
+        if (isset($_POST['sendCreateForm'])) {
+            if (/* Ici tu fait tes validation (!empty etc...) */) {
+                // Si tout est ok,
+                // On crée un nouveau produit à partir des données du formulaire
+                $product = new Product;
+                $product->name = htmlspecialchar($_POST['name']);
+                $product->price = (float)$_POST['price'];
+
+                // On l'enregistre en base de données
+                $product->create();
+
+                // On affiche la vue de validation
+                require('../views/product/CreateValidation.php');
+
+                // On coupe la méthode ici, pour ne pas afficher le formulaire
+                return;
+            } else {
+                $errorMessage = 'Veuillez compléter tous les champs';
+            }
+        }
+
+        // On affiche le formulaire
+        require('../views/product/Create.php');
     }
 
     /**

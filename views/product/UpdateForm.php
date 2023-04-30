@@ -2,18 +2,19 @@
 
 <!-- Message de validation, la variable $displayValidationMessage est défini dans le contrôleur -->
 <? if($displayValidationMessage): ?>
-Produit modifié avec succès
+    <p>Produit modifié avec succès</p>
+<? endif; ?>
+
+<!-- S'il y a un message d'erreur a afficher -->
+<?php if (isset($errorMessage )): ?>
+    <p><?= $errorMessage ?></p>
 <? endif; ?>
 
 <!-- Formulaire de modification du produit -->
 <form method="POST">
-  <label for="name">Nom:</label>
-  <input type="text" id="name" name="name" value="<?= $product->name ?>" />
+    <?php require('Inputs.php'); ?>
 
-  <label for="price">Prix:</label>
-  <input type="text" id="price" name="price" value="<?= $product->price ?>" />
-
-  <button type="submit" name="sendModifyForm">
+  <button type="submit" name="sendForm">
     Modifier le produit
   </button>
 </form>

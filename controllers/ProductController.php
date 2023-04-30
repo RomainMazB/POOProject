@@ -15,7 +15,7 @@ class ProductController
     public function show(int $id): void
     {
         // On récupère le modèle pré-rempli depuis l'id passé en paramètre
-        $product = new Product;
+        $product = new Product($this->connexion);
         $product = $product->find($id);
 
         // On affiche la vue
@@ -28,7 +28,7 @@ class ProductController
     public function modify(int $id): void
     {
         // On récupère le modèle pré-rempli depuis l'id passé en paramètre
-        $product = new Product;
+        $product = new Product($this->connexion);
         $product = $product->find($id);
 
         // On crée viteuf une variable dont on va se servir dans la vue
@@ -76,7 +76,7 @@ class ProductController
             if (/* Ici tu fait tes validation (!empty etc...) */) {
                 // Si tout est ok,
                 // On crée un nouveau produit à partir des données du formulaire
-                $product = new Product;
+                $product = new Product($this->connexion);
                 $product->name = htmlspecialchar($_POST['name']);
                 $product->price = (float)$_POST['price'];
 
@@ -103,7 +103,7 @@ class ProductController
     public function delete(int $id): void
     {
         // On récupère le modèle pré-rempli depuis l'id passé en paramètre
-        $product = new Product;
+        $product = new Product($this->connexion);
         $product = $product->find($id);
 
         // On le supprime de la base de donnée, et on redirige.
